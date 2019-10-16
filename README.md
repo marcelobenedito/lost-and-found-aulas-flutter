@@ -1,16 +1,39 @@
-# lost_and_found
+# Achados e Perdidos
 
-A new Flutter project.
+Aplicativo online de achados e perdidos usando Firebase
 
-## Getting Started
+Tutorial de criação deste app:
 
-This project is a starting point for a Flutter application.
+## Como clonar e importar
 
-A few resources to get you started if this is your first Flutter project:
+-   Faça um fork do projeto
+-   Abra o terminal do Visual Studio Code
+-   Digite (troque kleberandrade pelo nome do seu usuários): git clone https://github.com/kleberandrade/lost-and-found-aulas-flutter lost-and-found
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Desafios
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-   Melhorar o visual da tela de "SignIn" e "SignUp"
+-   Criar a tela de "Informações do Projeto/Autor"
+-   Criar a tela de "Termos de Uso"
+
+## Licença
+
+    Copyright 2019 Kleber de Oliveira Andrade
+    
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+    
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+    
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
