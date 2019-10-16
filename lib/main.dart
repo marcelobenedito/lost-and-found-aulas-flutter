@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lost_and_found/themes/theme.dart';
 import 'package:lost_and_found/views/about_page.dart';
+import 'package:lost_and_found/views/found_page.dart';
 import 'package:lost_and_found/views/home_page.dart';
 import 'package:lost_and_found/views/profile_page.dart';
 import 'package:lost_and_found/views/root_page.dart';
@@ -16,14 +18,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Achados e Perdidos',
+      theme: myTheme,
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        SignInPage.routeName: (BuildContext context) => new SignInPage(),
-        SignUpPage.routeName: (BuildContext context) => new SignUpPage(),
-        HomePage.routeName: (BuildContext context) => new HomePage(),
-        AboutPage.routeName: (BuildContext context) => new AboutPage(),
-        ProfilePage.routeName: (BuildContext context) => new ProfilePage(),
-        UseTermPage.routeName: (BuildContext context) => new UseTermPage(),
+        SignInPage.routeName: (context) => new SignInPage(),
+        SignUpPage.routeName: (context) => new SignUpPage(),
+        HomePage.routeName: (context) => new HomePage(),
+        AboutPage.routeName: (context) => new AboutPage(),
+        ProfilePage.routeName: (context) => new ProfilePage(),
+        UseTermPage.routeName: (context) => new UseTermPage(),
+        FoundPage.routeName: (context) => new FoundPage(),
       },
       home: RootPage(),
     );

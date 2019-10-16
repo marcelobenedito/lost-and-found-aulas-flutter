@@ -42,8 +42,10 @@ class _SignUpPageState extends State<SignUpPage> {
     return TextField(
       controller: _nameController,
       keyboardType: TextInputType.text,
-      decoration:
-          InputDecoration(hintText: 'Nome', prefixIcon: Icon(Icons.person)),
+      decoration: InputDecoration(
+        hintText: 'Nome',
+        prefixIcon: Icon(Icons.person),
+      ),
     );
   }
 
@@ -51,8 +53,10 @@ class _SignUpPageState extends State<SignUpPage> {
     return TextField(
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
-      decoration:
-          InputDecoration(hintText: 'Email', prefixIcon: Icon(Icons.email)),
+      decoration: InputDecoration(
+        hintText: 'Email',
+        prefixIcon: Icon(Icons.email),
+      ),
     );
   }
 
@@ -61,8 +65,10 @@ class _SignUpPageState extends State<SignUpPage> {
       controller: _passwordController,
       keyboardType: TextInputType.text,
       obscureText: true,
-      decoration:
-          InputDecoration(hintText: 'Senha', prefixIcon: Icon(Icons.vpn_key)),
+      decoration: InputDecoration(
+        hintText: 'Senha',
+        prefixIcon: Icon(Icons.vpn_key),
+      ),
     );
   }
 
@@ -71,20 +77,20 @@ class _SignUpPageState extends State<SignUpPage> {
       controller: _confirmPasswordController,
       keyboardType: TextInputType.text,
       obscureText: true,
-      decoration:
-          InputDecoration(hintText: 'Confirmar senha', prefixIcon: Icon(Icons.vpn_key)),
+      decoration: InputDecoration(
+        hintText: 'Confirmar senha',
+        prefixIcon: Icon(Icons.vpn_key),
+      ),
     );
   }
 
   Future _signUp() async {
-    print('SignUp Function');
     final email = _emailController.text;
     final password = _passwordController.text;
     await Auth.signUp(email, password).then(_onResultSignUpSuccess);
   }
 
-  void _onResultSignUpSuccess(String userId){
-    print('Result Sign Up ${userId}');
+  void _onResultSignUpSuccess(String userId) {
     final email = _emailController.text;
     final name = _nameController.text;
     final user = User(userId: userId, name: name, email: email);
@@ -98,7 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _signIn(){
+  void _signIn() {
     Navigator.of(context).pushReplacementNamed(SignInPage.routeName);
   }
 

@@ -4,7 +4,6 @@ import 'package:lost_and_found/views/about_page.dart';
 import 'package:lost_and_found/views/found_page.dart';
 import 'package:lost_and_found/views/home_page.dart';
 import 'package:lost_and_found/views/profile_page.dart';
-import 'package:lost_and_found/views/sign_in_page.dart';
 import 'package:lost_and_found/views/use_term_page.dart';
 
 class CustomDrawer extends StatefulWidget {
