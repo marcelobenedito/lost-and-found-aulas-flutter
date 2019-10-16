@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lost_and_found/services/auth.dart';
 import 'package:lost_and_found/views/about_page.dart';
 import 'package:lost_and_found/views/found_page.dart';
 import 'package:lost_and_found/views/home_page.dart';
@@ -65,7 +66,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: Text('Sair'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed(SignInPage.routeName);
+              Auth.signOut();
+              //Navigator.of(context).pushReplacementNamed(SignInPage.routeName);
             },
           ),
         ],

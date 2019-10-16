@@ -14,25 +14,26 @@ class _RootPageState extends State<RootPage> {
   Widget build(BuildContext context) {
     return new StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return _showWaitingContainer();
-        } else {
-          if (snapshot.hasData) {
-            // recuperar as informações -> enviar para home
-            return HomePage();
-          } else {
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          FirebaseUser user = snapshot.data;
+          if (user == null) {
             return SignInPage();
           }
+          return HomePage();
+        } else {
+          return _showWaitingContainer();
         }
       },
     );
   }
 
   Widget _showWaitingContainer() {
-    return Center(
-      child: CircularProgressIndicator(
-        backgroundColor: Theme.of(context).primaryColor,
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
       ),
     );
   }
