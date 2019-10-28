@@ -6,20 +6,22 @@ import 'package:lost_and_found/models/user.dart';
 class Auth {
   static Future<String> signIn(String email, String password) async {
     final auth = FirebaseAuth.instance;
-    final result =
-        await auth.signInWithEmailAndPassword(email: email, password: password);
+    final result = await auth.signInWithEmailAndPassword(email: email, password: password);
     return result.user.uid;
   }
 
   static Future<String> signUp(String email, String password) async {
     final auth = FirebaseAuth.instance;
-    final result = await auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    final result = await auth.createUserWithEmailAndPassword(email: email, password: password);
     return result.user.uid;
   }
 
   static Future<void> signOut() async {
     FirebaseAuth.instance.signOut();
+  }
+
+  static Future<void> forgotPasswordEmail(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
   static Future<FirebaseUser> getCurrentFirebaseUser() async {
