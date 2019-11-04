@@ -24,6 +24,21 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildBody() {
-    return Center(child: Text('Em construção!'));
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Form(
+        child: Column(
+          children: <Widget>[
+            _createNameTextField(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _createNameTextField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Nome', icon: Icon(Icons.person)),
+    );
   }
 }

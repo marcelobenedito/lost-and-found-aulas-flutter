@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/models/user.dart';
 import 'package:lost_and_found/services/auth.dart';
@@ -87,17 +88,35 @@ class _SignUpPageState extends State<SignUpPage> {
   Future _signUp() async {
     final email = _emailController.text;
     final password = _passwordController.text;
-    await Auth.signUp(email, password).then(_onResultSignUpSuccess);
+    await Auth.signUp(email, password)
+        .then(_onResultSignUpSuccess)
+        .catchError((error) {
+      Flushbar(
+        title: 'Erro',
+        message: error.toString(),
+        duration: Duration(seconds: 3),
+      )..show(context);
+    });
   }
 
   void _onResultSignUpSuccess(String userId) {
     final email = _emailController.text;
     final name = _nameController.text;
     final user = User(userId: userId, name: name, email: email);
-    Auth.addUser(user);
+    Auth.addUser(user).then(_onResultAddUser);
+  }
+
+  void _onResultAddUser(result) {
+    Flushbar(
+      title: 'Novo usuário',
+      message: 'Usuário registrado com sucesso!',
+      duration: Duration(seconds: 2),
+    )..show(context);
   }
 
   Widget _showSignUpButton() {
+    FocusScope.of(context).requestFocus(new FocusNode());
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32.0),
       child: RaisedButton(child: Text('REGISTRAR'), onPressed: _signUp),
@@ -105,7 +124,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _signIn() {
-    Navigator.of(context).pushReplacementNamed(SignInPage.routeName);
+    Navigator.pushReplacementNamed(context, SignInPage.routeName);
   }
 
   Widget _showSignInButton() {

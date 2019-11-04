@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:lost_and_found/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth {
+
   static Future<String> signIn(String email, String password) async {
     final auth = FirebaseAuth.instance;
     final result = await auth.signInWithEmailAndPassword(email: email, password: password);
@@ -12,11 +14,14 @@ class Auth {
 
   static Future<String> signUp(String email, String password) async {
     final auth = FirebaseAuth.instance;
-    final result = await auth.createUserWithEmailAndPassword(email: email, password: password);
+    final result = await auth.createUserWithEmailAndPassword(
+        email: email, password: password);
     return result.user.uid;
   }
 
   static Future<void> signOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     FirebaseAuth.instance.signOut();
   }
 
@@ -51,23 +56,58 @@ class Auth {
     }
   }
 
-  static Stream<User> getUser(String userID) {
-    return Firestore.instance
-        .collection("users")
-        .where("userID", isEqualTo: userID)
-        .snapshots()
-        .map((QuerySnapshot snapshot) {
-      return snapshot.documents.map((document) {
-        return User.fromDocument(document);
-      }).first;
-    });
+  static Future<User> getUser(String userId) {
+    if (userId != null) {
+      return Firestore.instance
+          .collection('users')
+          .document(userId)
+          .get()
+          .then((documentSnapshot) => User.fromDocument(documentSnapshot));
+    } else {
+      print('firestore userId can not be null');
+      return null;
+    }
   }
 
   static String getExceptionText(Exception error) {
     if (error is PlatformException) {
-      return error.message;
+      switch (error.message) {
+        case 'There is no user record corresponding to this identifier. The user may have been deleted.':
+          return 'User with this email address not found.';
+          break;
+        case 'The password is invalid or the user does not have a password.':
+          return 'Invalid password.';
+          break;
+        case 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.':
+          return 'No internet connection.';
+          break;
+        case 'The email address is already in use by another account.':
+          return 'This email address already has an account.';
+          break;
+        default:
+          return 'Unknown error occured.';
+      }
     } else {
       return 'Unknown error occured.';
+    }
+  }
+
+  static Future<String> storeUserLocal(User user) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String storeUser = user.toJson();
+    print('store $storeUser');
+    await prefs.setString('user', storeUser);
+    return user.userId;
+  }
+
+  static Future<User> getUserLocal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') != null) {
+      User user = User.fromJson(prefs.getString('user'));
+      print('recover ${user.toJson()}');
+      return user;
+    } else {
+      return null;
     }
   }
 }
