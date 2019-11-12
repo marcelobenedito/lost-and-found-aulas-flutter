@@ -19,6 +19,13 @@ class LostObject {
     this.finderUserId,
   });
 
+  String getInitials() {
+    if (title.isNotEmpty)
+      return title.toUpperCase()[0];
+    else
+      return '?';
+  }
+
   factory LostObject.fromDocument(DocumentSnapshot document) {
     return LostObject.fromMap(document.data);
   }

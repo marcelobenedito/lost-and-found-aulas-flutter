@@ -12,10 +12,17 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _formKey = new GlobalKey<FormState>();
+
   final _nameController = new TextEditingController();
   final _emailController = new TextEditingController();
   final _passwordController = new TextEditingController();
   final _confirmPasswordController = new TextEditingController();
+
+  final _nameFocusNode = new FocusNode();
+  final _emailFocusNode = new FocusNode();
+  final _passwordFocusNode = new FocusNode();
+  final _confirmPasswordFocusNode = new FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -23,46 +30,62 @@ class _SignUpPageState extends State<SignUpPage> {
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _showNameTextField(),
-              _showEmailTextField(),
-              _showPasswordTextField(),
-              _showConfirmPasswordTextField(),
-              _showSignUpButton(),
-              _showSignInButton(),
-            ],
-          ),
+          child: _buildForm(),
         ),
       ),
     );
   }
 
+  Widget _buildForm() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          _showNameTextField(),
+          _showEmailTextField(),
+          _showPasswordTextField(),
+          _showConfirmPasswordTextField(),
+          _showSignUpButton(),
+          _showSignInButton(),
+        ],
+      ),
+    );
+  }
+
   Widget _showNameTextField() {
-    return TextField(
+    return TextFormField(
       controller: _nameController,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
         hintText: 'Nome',
         prefixIcon: Icon(Icons.person),
       ),
+      textInputAction: TextInputAction.next,
+      autofocus: true,
+      focusNode: _nameFocusNode,
+      onEditingComplete: () =>
+          FocusScope.of(context).requestFocus(_emailFocusNode),
     );
   }
 
   Widget _showEmailTextField() {
-    return TextField(
+    return TextFormField(
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         hintText: 'Email',
         prefixIcon: Icon(Icons.email),
       ),
+      textInputAction: TextInputAction.next,
+      focusNode: _emailFocusNode,
+      onEditingComplete: () =>
+          FocusScope.of(context).requestFocus(_passwordFocusNode),
     );
   }
 
   Widget _showPasswordTextField() {
-    return TextField(
+    return TextFormField(
       controller: _passwordController,
       keyboardType: TextInputType.text,
       obscureText: true,
@@ -70,11 +93,15 @@ class _SignUpPageState extends State<SignUpPage> {
         hintText: 'Senha',
         prefixIcon: Icon(Icons.vpn_key),
       ),
+      textInputAction: TextInputAction.next,
+      focusNode: _passwordFocusNode,
+      onEditingComplete: () =>
+          FocusScope.of(context).requestFocus(_confirmPasswordFocusNode),
     );
   }
 
   Widget _showConfirmPasswordTextField() {
-    return TextField(
+    return TextFormField(
       controller: _confirmPasswordController,
       keyboardType: TextInputType.text,
       obscureText: true,
@@ -82,6 +109,8 @@ class _SignUpPageState extends State<SignUpPage> {
         hintText: 'Confirmar senha',
         prefixIcon: Icon(Icons.vpn_key),
       ),
+      textInputAction: TextInputAction.next,
+      focusNode: _confirmPasswordFocusNode,
     );
   }
 
@@ -115,8 +144,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _showSignUpButton() {
-    FocusScope.of(context).requestFocus(new FocusNode());
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32.0),
       child: RaisedButton(child: Text('REGISTRAR'), onPressed: _signUp),
@@ -128,6 +155,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _showSignInButton() {
-    return FlatButton(child: Text('Login'), onPressed: _signIn);
+    return FlatButton(child: Text('Já tem conta? faça login'), onPressed: _signIn);
   }
 }

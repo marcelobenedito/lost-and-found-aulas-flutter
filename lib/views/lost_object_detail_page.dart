@@ -7,9 +7,14 @@ import 'package:intl/intl.dart';
 import 'package:lost_and_found/models/lost_object.dart';
 import 'package:lost_and_found/models/user.dart';
 import 'package:lost_and_found/services/auth.dart';
+import 'package:lost_and_found/widgets/image_area.dart';
 
 class LostObjectDetailPage extends StatefulWidget {
   static const String routeName = '/lostobjectdetail';
+
+  final LostObject lostObject;
+
+  LostObjectDetailPage({this.lostObject});
 
   @override
   _LostObjectDetailPageState createState() => _LostObjectDetailPageState();
@@ -24,6 +29,32 @@ class _LostObjectDetailPageState extends State<LostObjectDetailPage> {
 
   final _dateFormat = DateFormat("dd/MM/yyyy");
   final _initialDateValue = DateTime.now();
+
+  User _localUser;
+  String _urlPicture;
+  LostObject _lostObject = new LostObject();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.lostObject != null) {
+      _lostObject = LostObject.fromMap(widget.lostObject.toMap());
+      _titleController.text = _lostObject.title;
+      _descriptionController.text = _lostObject.description;
+      _localController.text = _lostObject.local;
+      _dateController.text = _lostObject.date;
+    }
+
+    _loadLocalUser();
+  }
+
+  Future _loadLocalUser() async {
+    final user = await Auth.getUserLocal();
+    setState(() {
+      _localUser = user;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,19 +83,20 @@ class _LostObjectDetailPageState extends State<LostObjectDetailPage> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      User user = await Auth.getUserLocal();
-
-      final lostObject = new LostObject(
+      _lostObject = new LostObject(
         title: _titleController.text,
         description: _descriptionController.text,
         local: _localController.text,
         date: _dateController.text,
-        finderUserId: user.userId,
+        finderUserId: _localUser.userId,
+        pictureUrl: _urlPicture,
       );
+
+      print('Saving ${_lostObject.toJson()}');
 
       await Firestore.instance
           .collection('lost_objects')
-          .add(lostObject.toMap())
+          .add(_lostObject.toMap())
           .then(_onSaveDataSuccess)
           .catchError(_onSaveDataFailure);
     }
@@ -86,12 +118,13 @@ class _LostObjectDetailPageState extends State<LostObjectDetailPage> {
 
   Widget _buildBody() {
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+      padding: EdgeInsets.all(10.0),
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            _buildImageArea(),
             _buildTitleTextField(),
             _buildDescriptionTextField(),
             _buildLocalTextField(),
@@ -102,11 +135,24 @@ class _LostObjectDetailPageState extends State<LostObjectDetailPage> {
     );
   }
 
+  Widget _buildImageArea() {
+    return ImageArea(
+      userId: _localUser.userId,
+      onCompleted: (url) {
+        print('onCompleted with url: $url');
+        _urlPicture = url;
+      },
+    );
+  }
+
   Widget _buildTitleTextField() {
     return TextFormField(
       controller: _titleController,
       maxLines: 1,
-      decoration: InputDecoration(labelText: 'Título'),
+      decoration: InputDecoration(
+        labelText: 'Título',
+        prefixIcon: Icon(Icons.title),
+      ),
       validator: (text) => text.isEmpty ? 'Título inválido' : null,
     );
   }
@@ -116,7 +162,10 @@ class _LostObjectDetailPageState extends State<LostObjectDetailPage> {
       controller: _descriptionController,
       minLines: 1,
       maxLines: 5,
-      decoration: InputDecoration(labelText: 'Descrição'),
+      decoration: InputDecoration(
+        labelText: 'Descrição',
+        prefixIcon: Icon(Icons.description),
+      ),
       validator: (text) => text.isEmpty ? 'Descrição inválida' : null,
     );
   }
@@ -125,7 +174,10 @@ class _LostObjectDetailPageState extends State<LostObjectDetailPage> {
     return TextFormField(
       controller: _localController,
       minLines: 1,
-      decoration: InputDecoration(labelText: 'Local'),
+      decoration: InputDecoration(
+        labelText: 'Local',
+        prefixIcon: Icon(Icons.location_on),
+      ),
       validator: (text) => text.isEmpty ? 'Local inválido' : null,
     );
   }
@@ -135,7 +187,10 @@ class _LostObjectDetailPageState extends State<LostObjectDetailPage> {
       controller: _dateController,
       format: _dateFormat,
       initialValue: _initialDateValue,
-      decoration: InputDecoration(labelText: 'Data'),
+      decoration: InputDecoration(
+        labelText: 'Data',
+        prefixIcon: Icon(Icons.date_range),
+      ),
       validator: (date) => date == null ? 'Data inválida' : null,
       onShowPicker: (context, currentValue) {
         return showDatePicker(

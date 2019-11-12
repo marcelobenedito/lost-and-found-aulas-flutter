@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/models/lost_object.dart';
 import 'package:lost_and_found/utils/common.dart';
+import 'package:lost_and_found/widgets/circle_network_image.dart';
 import 'package:lost_and_found/widgets/custom_drawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -39,7 +40,8 @@ class _HomePageState extends State<HomePage> {
           case ConnectionState.active:
           case ConnectionState.done:
             if (snapshot.data.documents.length == 0)
-              return Common.emptyContainer(message: "Nenhum objeto encontrado!");
+              return Common.emptyContainer(
+                  message: "Nenhum objeto encontrado!");
             else
               return ListView(
                 children: snapshot.data.documents.map(_buildCard).toList(),
@@ -53,10 +55,11 @@ class _HomePageState extends State<HomePage> {
   Widget _buildCard(document) {
     final lostObject = LostObject.fromDocument(document);
     return ListTile(
-      title: Text(lostObject.title),
-      subtitle: Text(lostObject.description),
-      leading: CircleAvatar(
-        child: Text(lostObject.title.toUpperCase()[0]),
+      title: Text(lostObject?.title ?? ''),
+      subtitle: Text(lostObject?.description ?? ''),
+      leading: CircleNetworkImage(
+        initials: lostObject?.getInitials(),
+        pictureUrl: lostObject.pictureUrl,
       ),
     );
   }

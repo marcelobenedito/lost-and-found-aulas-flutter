@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/widgets/custom_drawer.dart';
 
@@ -8,6 +9,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,4 +43,5 @@ class _ProfilePageState extends State<ProfilePage> {
       decoration: InputDecoration(labelText: 'Nome', icon: Icon(Icons.person)),
     );
   }
+
 }

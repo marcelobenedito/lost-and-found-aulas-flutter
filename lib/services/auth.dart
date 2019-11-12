@@ -95,7 +95,6 @@ class Auth {
   static Future<String> storeUserLocal(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String storeUser = user.toJson();
-    print('store $storeUser');
     await prefs.setString('user', storeUser);
     return user.userId;
   }
@@ -104,7 +103,6 @@ class Auth {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('user') != null) {
       User user = User.fromJson(prefs.getString('user'));
-      print('recover ${user.toJson()}');
       return user;
     } else {
       return null;

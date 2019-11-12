@@ -15,7 +15,7 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  User _user;
+  User _user = new User();
 
   @override
   void initState() {
@@ -100,7 +100,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       accountName: Text(_user?.name ?? ""),
       accountEmail: Text(_user?.email ?? ""),
       currentAccountPicture:
-          CircleAvatar(child: Text(_user?.name?.toUpperCase()[0] ?? "")),
+          CircleAvatar(child: Text(_user?.getInitials() ?? '')),
     );
   }
 }

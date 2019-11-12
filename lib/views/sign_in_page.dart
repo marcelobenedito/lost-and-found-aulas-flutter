@@ -22,17 +22,21 @@ class _SignInPageState extends State<SignInPage> {
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _showEmailTextField(),
-              _showPasswordTextField(),
-              _showSignInButton(),
-              _showSignUpButton(),
-            ],
-          ),
+          child: _buildForm(),
         ),
       ),
+    );
+  }
+
+  Widget _buildForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        _showEmailTextField(),
+        _showPasswordTextField(),
+        _showSignInButton(),
+        _showSignUpButton(),
+      ],
     );
   }
 

@@ -6,6 +6,7 @@ import 'package:lost_and_found/models/user.dart';
 import 'package:lost_and_found/services/auth.dart';
 import 'package:lost_and_found/utils/common.dart';
 import 'package:lost_and_found/views/lost_object_detail_page.dart';
+import 'package:lost_and_found/widgets/circle_network_image.dart';
 import 'package:lost_and_found/widgets/custom_drawer.dart';
 
 class FoundPage extends StatefulWidget {
@@ -96,8 +97,9 @@ class _FoundPageState extends State<FoundPage> {
     return ListTile(
       title: Text(lostObject.title),
       subtitle: Text(lostObject.description),
-      leading: CircleAvatar(
-        child: Text(lostObject.title.toUpperCase()[0]),
+      leading: CircleNetworkImage(
+        initials: lostObject?.getInitials(),
+        pictureUrl: lostObject.pictureUrl,
       ),
     );
   }
