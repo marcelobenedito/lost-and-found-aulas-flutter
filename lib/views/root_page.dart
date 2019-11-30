@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/views/sign_in_page.dart';
+import 'package:lost_and_found/widgets/splash_screen.dart';
 
 import 'home_page.dart';
 
@@ -20,9 +21,9 @@ class _RootPageState extends State<RootPage> {
         if (snapshot.connectionState == ConnectionState.active) {
           FirebaseUser user = snapshot.data;
           if (user == null) {
-            return SignInPage();
+            return SplashScreenWidget(SignInPage());
           }
-          return HomePage();
+          return SplashScreenWidget(HomePage());
         } else {
           return _showWaitingContainer();
         }

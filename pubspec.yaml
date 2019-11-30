@@ -22,10 +22,22 @@ dependencies:
   datetime_picker_formfield: ^0.4.3
   image_picker: ^0.6.1+11
   cached_network_image: ^1.1.3
+  splashscreen: ^1.2.0
+  google_sign_in: ^3.2.2
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.7.3"
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: true 
+  ios: true
+  image_path: "assets/images/res/mipmap-xhdpi/lost_and_found_logo.png"
+
 flutter:
   uses-material-design: true
+  assets:
+     - assets/images/res/mipmap-xxxhdpi/
+     - assets/images/res/mipmap-xhdpi/
+     - assets/images/

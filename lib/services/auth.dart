@@ -1,14 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lost_and_found/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth {
-
   static Future<String> signIn(String email, String password) async {
     final auth = FirebaseAuth.instance;
-    final result = await auth.signInWithEmailAndPassword(email: email, password: password);
+    final result =
+        await auth.signInWithEmailAndPassword(email: email, password: password);
+    return result.user.uid;
+  }
+
+  static Future<String> signInWithGoogle(
+      GoogleSignInAccount googleSignInAccount) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    GoogleSignInAuthentication googleAuth =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final result = await auth.signInWithCredential(credential);
     return result.user.uid;
   }
 
